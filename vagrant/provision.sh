@@ -3,43 +3,48 @@
 echo "Updating"
 sudo apt-get update
 
-echo "Installing Packages"
-sudo apt-get install -y git-core php5 php5-cgi zip unzip nginx php5-fpm
+echo "Install utils"
+sudo apt-get install -y git-core git zip unzip
 
-echo "Setting up nginx"
-sudo rm /etc/nginx/sites-enabled/default >> /dev/null
-sudo cp /vagrant/vagrant/codiad.conf /etc/nginx/sites-enabled/codiad
-sudo cp /vagrant/vagrant/www.conf /etc/php5/fpm/pool.d/
+# echo "Installing Packages"
+# sudo apt-get install -y git-core php5 php5-cgi zip unzip nginx php5-fpm
 
-if [ ! -d "/var/www" ]; then
-    echo "Making /var/www"
-    sudo mkdir /var/www
-else
-    echo "/var/www already exists"
-fi
+# echo "Setting up nginx"
+# sudo rm /etc/nginx/sites-enabled/default >> /dev/null
+# sudo cp /vagrant/vagrant/codiad.conf /etc/nginx/sites-enabled/codiad
+# sudo cp /vagrant/vagrant/www.conf /etc/php5/fpm/pool.d/
 
-if [ ! -d "/var/www/codiad" ]; then
-    echo "Cloning Codiad"
-    git clone https://github.com/Codiad/Codiad.git /var/www/codiad
-else
-    echo "/var/www/codiad already exists. Ignoring."
-fi
+# if [ ! -d "/var/www" ]; then
+#     echo "Making /var/www"
+#     sudo mkdir /var/www
+# else
+#     echo "/var/www already exists"
+# fi
+
+# if [ ! -d "/var/www/codiad" ]; then
+#     echo "Cloning Codiad"
+#     git clone https://github.com/Codiad/Codiad.git /var/www/codiad
+# else
+#     echo "/var/www/codiad already exists. Ignoring."
+# fi
 
 
-echo "Setting Codiad permissions to www-data:www-data"
-sudo chown -R www-data:www-data /var/www/codiad
-sudo chown -R www-data:www-data /vagrant
-sudo chown www-data:www-data /var/run/php5-fpm.sock
+# echo "Setting Codiad permissions to www-data:www-data"
+# sudo chown -R www-data:www-data /var/www/codiad
+# sudo chown -R www-data:www-data /var/www/codiad
 
-echo "Restarting nginx and php5-fpm"
-sudo service nginx restart
-sudo service php5-fpm restart
+# sudo chown -R www-data:www-data /vagrant/www/codiad/wor
+# sudo chown www-data:www-data /var/run/php5-fpm.sock
 
-echo "Installmongodb"
-sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv 7F0CEB10
-sudo echo "deb http://repo.mongodb.org/apt/ubuntu "$(lsb_release -sc)"/mongodb-org/3.0 multiverse" | sudo tee /etc/apt/sources.list.d/mongodb-org-3.0.list
+# echo "Restarting nginx and php5-fpm"
+# sudo service nginx restart
+# sudo service php5-fpm restart
+
+echo "Install mongodb"
+sudo echo "deb http://repo.mongodb.org/apt/debian wheezy/mongodb-org/3.0 main" | sudo tee /etc/apt/sources.list.d/mongodb-org-3.0.list
 sudo apt-get update
-sudo apt-get install mongodb-org
+sudo apt-get install -y mongodb-org
+export LC_ALL=C
 
 echo "Install node"
 sudo apt-get install -y npm
