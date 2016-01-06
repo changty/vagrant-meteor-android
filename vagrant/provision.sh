@@ -13,6 +13,7 @@ echo "Install utils"
 sudo apt-get install -y git-core git zip unzip lib32stdc++6 lib32z1 openjdk-7-jdk ant expect
 
 echo "Install mongodb"
+sudo apt-key adv --keyserver keyserver.ubuntu.com --recv 7F0CEB10
 sudo echo "deb http://repo.mongodb.org/apt/debian wheezy/mongodb-org/3.0 main" | sudo tee /etc/apt/sources.list.d/mongodb-org-3.0.list
 sudo apt-get update
 sudo apt-get install -y mongodb-org
