@@ -1,10 +1,14 @@
 #!/usr/bin/env bash
 
+
+ANDROID_SDK_FILENAME=android-sdk_r24.2-linux.tgz
+ANDROID_SDK=http://dl.google.com/android/$ANDROID_SDK_FILENAME
+
 echo "Updating"
 sudo apt-get update
 
 echo "Install utils"
-sudo apt-get install -y git-core git zip unzip
+sudo apt-get install -y git-core git zip unzip lib32stdc++6 lib32z1
 
 # echo "Installing Packages"
 # sudo apt-get install -y git-core php5 php5-cgi zip unzip nginx php5-fpm
@@ -63,6 +67,35 @@ sudo npm install -g grunt-cli
 
 echo "Install meteor"
 curl https://install.meteor.com/ | sh
+
+# sudo add-apt-repository ppa:ubuntu-desktop/ubuntu-make
+sudo apt-get update
+sudo apt-get install --yes openjdk-7-jdk ant expect
+
+
+curl -O $ANDROID_SDK
+tar -xzvf $ANDROID_SDK_FILENAME
+sudo chown -R vagrant android-sdk-linux/
+
+
+echo "ANDROID_HOME=~/android-sdk-linux" >> /home/vagrant/.bashrc
+echo "export JAVA_HOME=/usr/lib/jvm/java-7-openjdk-amd64" >> /home/vagrant/.bashrc
+echo "PATH=\$PATH:~/android-sdk-linux/tools:~/android-sdk-linux/platform-tools" >> /home/vagrant/.bashrc
+
+expect -c '
+set timeout -1   ;
+spawn /home/vagrant/android-sdk-linux/tools/android update sdk -u --all --filter platform-tool,android-22,build-tools-22.0.1
+expect { 
+    "Do you accept the license" { exp_send "y\r" ; exp_continue }
+    eof
+}
+'
+sudo chown root:vagrant /home/vagrant/android-sdk-linux/platform-tools/adb
+sudo chmod 4550 /home/vagrant/android-sdk-linux/platform-tools/adb
+
+# sudo apt-get install -y ubuntu-make
+# umake android
+
 
 #Meteor conf
 # run this command before starting meteor 
