@@ -11,10 +11,14 @@ Change the vendorid to match your phone's vendor id. You can find it with comman
 
 `$ lsusb`
 
-
 ### Setup
+
+Modify `vagrant/provision.sh MONGO_DBNAME` to what you want. Default name is *"dbname"*
 
 `$ cp Vagrantfile.dist Vagrantfile`
 
 `$ vagrant up`
+
+`$ vagrant ssh`
+
 

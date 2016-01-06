@@ -3,46 +3,14 @@
 
 ANDROID_SDK_FILENAME=android-sdk_r24.2-linux.tgz
 ANDROID_SDK=http://dl.google.com/android/$ANDROID_SDK_FILENAME
+MONGODB_NAME=dbname
+
 
 echo "Updating"
 sudo apt-get update
 
 echo "Install utils"
-sudo apt-get install -y git-core git zip unzip lib32stdc++6 lib32z1
-
-# echo "Installing Packages"
-# sudo apt-get install -y git-core php5 php5-cgi zip unzip nginx php5-fpm
-
-# echo "Setting up nginx"
-# sudo rm /etc/nginx/sites-enabled/default >> /dev/null
-# sudo cp /vagrant/vagrant/codiad.conf /etc/nginx/sites-enabled/codiad
-# sudo cp /vagrant/vagrant/www.conf /etc/php5/fpm/pool.d/
-
-# if [ ! -d "/var/www" ]; then
-#     echo "Making /var/www"
-#     sudo mkdir /var/www
-# else
-#     echo "/var/www already exists"
-# fi
-
-# if [ ! -d "/var/www/codiad" ]; then
-#     echo "Cloning Codiad"
-#     git clone https://github.com/Codiad/Codiad.git /var/www/codiad
-# else
-#     echo "/var/www/codiad already exists. Ignoring."
-# fi
-
-
-# echo "Setting Codiad permissions to www-data:www-data"
-# sudo chown -R www-data:www-data /var/www/codiad
-# sudo chown -R www-data:www-data /var/www/codiad
-
-# sudo chown -R www-data:www-data /vagrant/www/codiad/wor
-# sudo chown www-data:www-data /var/run/php5-fpm.sock
-
-# echo "Restarting nginx and php5-fpm"
-# sudo service nginx restart
-# sudo service php5-fpm restart
+sudo apt-get install -y git-core git zip unzip lib32stdc++6 lib32z1 openjdk-7-jdk ant expect
 
 echo "Install mongodb"
 sudo echo "deb http://repo.mongodb.org/apt/debian wheezy/mongodb-org/3.0 main" | sudo tee /etc/apt/sources.list.d/mongodb-org-3.0.list
@@ -68,11 +36,7 @@ sudo npm install -g grunt-cli
 echo "Install meteor"
 curl https://install.meteor.com/ | sh
 
-# sudo add-apt-repository ppa:ubuntu-desktop/ubuntu-make
-sudo apt-get update
-sudo apt-get install --yes openjdk-7-jdk ant expect
-
-
+echo "Install Android SDK"
 curl -O $ANDROID_SDK
 tar -xzvf $ANDROID_SDK_FILENAME
 sudo chown -R vagrant android-sdk-linux/
@@ -92,10 +56,9 @@ expect {
 '
 sudo chown root:vagrant /home/vagrant/android-sdk-linux/platform-tools/adb
 sudo chmod 4550 /home/vagrant/android-sdk-linux/platform-tools/adb
+sudo chown -R vagrant ~/.android
 
-# sudo apt-get install -y ubuntu-make
-# umake android
-
+echo "export MONGO_URL=mongodb://localhost:27017/$MONGODB_NAME" >> /home/vagrant/.bashrc
 
 #Meteor conf
 # run this command before starting meteor 
